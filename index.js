@@ -84,6 +84,27 @@ const port = process.env.PORT || 5000;
      res.send(result);
    })
 
+   app.get("/research", async (req, res) => {
+    const result = await research.find().toArray();
+    res.send(result);
+  });
+
+  app.get("/searchCollege", async (req, res) => {
+    // console.log(req.query.search)
+    const search = req.query.search;
+    const query = { college_name: { $regex: search } };
+    const result = await allColleges.find(query).toArray();
+    res.send(result);
+  });
+
+  app.get("/allCollege/:id", async (req, res) => {
+    const id = req.params.id;
+
+    const query = { _id: new ObjectId(id) };
+    const result = await allColleges.findOne(query);
+    res.send(result);
+  });
+
 
 
 
