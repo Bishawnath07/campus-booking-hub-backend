@@ -105,6 +105,42 @@ const port = process.env.PORT || 5000;
     res.send(result);
   });
 
+  app.post("/admissionApply", async (req, res) => {
+    const appliedDetails = req.body;
+    const result = await applyForAdmission.insertOne(appliedDetails);
+    res.send(result);
+  });
+
+   app.get("/admissionApply", async (req, res) => {
+    let query = {};
+    if (req.query?.email) {
+      query = { email: req.query.email,  };
+    }
+    const result = await applyForAdmission.find(query).toArray();
+    res.send(result);
+  });
+
+  app.get("/admissionApply", async (req, res) => {
+    const result = await applyForAdmission.find().toArray();
+    res.send(result);
+  });
+
+  app.patch("/admissionApply/:id", async (req, res) => {
+    const id = req.params.id;
+    const filter = { _id: new ObjectId(id) };
+    console.log(filter)
+    const update = req.body
+    // console.log(update)
+    const option = {upsert : true}
+    const updateDoc = {
+      $set: {
+        rating: update.rating,
+        review : update.review
+      },
+    };
+    const result = await applyForAdmission.updateOne(filter, updateDoc, option);
+    res.send(result);
+  });
 
 
 
