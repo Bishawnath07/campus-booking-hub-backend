@@ -36,13 +36,20 @@ const port = process.env.PORT || 5000;
  
 
 
-
-
-
      app.get("/allCollege", async (req, res) => {
-        const result = await allColleges.find().toArray();
-        res.send(result);
-      });
+      const result = await allColleges.find().toArray();
+      res.send(result);
+    });
+
+
+    app.get("/users", async (req, res) => {
+      let query = {};
+      if (req.query?.email) {
+        query = { email: req.query.email,  };
+      }
+      const result = await UserCollection.find(query).toArray();
+      res.send(result);
+    });
 
 
 
